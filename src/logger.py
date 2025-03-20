@@ -117,7 +117,7 @@ class Logger(object):
 	def finish(self, agent):
 		if self._save_model:
 			fp = self._model_dir / f'model.pt'
-			torch.save(agent.state_dict(), fp)
+			agent.save(fp)
 			if self._wandb:
 				artifact = self._wandb.Artifact(self._group+'-'+str(self._seed), type='model')
 				artifact.add_file(fp)
