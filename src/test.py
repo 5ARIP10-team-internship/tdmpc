@@ -5,8 +5,8 @@ from env import make_env
 __CONFIG__, __LOGS__ = 'cfgs', 'logs'
 
 def test(cfg):
-    env, agent = make_env(cfg), TDMPC(cfg)
-    model_dir = Path().cwd() / __LOGS__ / cfg.task / cfg.modality / cfg.exp_name / str(cfg.seed) / 'models'
+    env, agent = make_env(cfg, render_mode="human"), TDMPC(cfg)
+    model_dir = Path().cwd() / __LOGS__ / cfg.task / 'models'
     agent.load(model_dir / 'model.pt')
     obs, _ = env.reset()
     done, ep_reward, t = False, 0, 0

@@ -3,8 +3,8 @@ task: quadruped-run
 modality: 'state'
 action_repeat: ???
 discount: 0.99
-episode_length: 200/${action_repeat}
-train_steps: 10000/${action_repeat}
+episode_length: 1000/${action_repeat}
+train_steps: 500000/${action_repeat}
 
 # planning
 iterations: 6
@@ -41,8 +41,8 @@ latent_dim: 50
 
 # wandb (insert your own)
 use_wandb: false
-wandb_project: none
-wandb_entity: none
+wandb_project:
+wandb_entity:
 
 # misc
 seed: 1
