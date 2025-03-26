@@ -1,0 +1,6 @@
+termcolor==2.5.0
+omegaconf==2.3.0
+gymnasium==1.1.1
+pandas==2.1.4
+wandb==0.19.8
+pygame==2.6.1
