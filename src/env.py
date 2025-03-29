@@ -1,4 +1,7 @@
 import gymnasium as gym
+import envs
+import numpy as np
+import inspect
 
 class ActionRepeatWrapper(gym.Wrapper):
 	def __init__(self, env, num_repeats):
@@ -19,13 +22,26 @@ class ActionRepeatWrapper(gym.Wrapper):
 		return obs, total_reward, terminated, truncated, info
 
 def make_env(cfg, render_mode=None):
-    domain, task = cfg.task.replace('-', '_').split('_', 1)
+    domain = cfg.task
 
-    if render_mode:
-        env = gym.make('Pendulum-v1', render_mode=render_mode, g=9.81)
-    else:
-        env = gym.make('Pendulum-v1', render_mode="rgb_array", g=9.81)
+    # Get the environment class from gym
+    env_spec = gym.envs.registry.get(domain)
+    if env_spec is None:
+        raise ValueError(f"Environment '{domain}' is not registered in gym.")
 
+    env_class = env_spec.entry_point
+    module_name, class_name = env_class.split(":")
+
+    env_module = __import__(module_name, fromlist=[class_name])
+    env_cls = getattr(env_module, class_name)
+
+    # Get valid arguments from the environment's __init__ method
+    valid_params = set(inspect.signature(env_cls.__init__).parameters.keys())
+
+    # Keep only valid parameters
+    filtered_kwargs = {k: v for k, v in cfg.items() if k in valid_params}
+
+    env = gym.make(domain, render_mode=render_mode, **filtered_kwargs)
     env = ActionRepeatWrapper(env, cfg.action_repeat)
     env = gym.wrappers.TimeLimit(env, cfg.episode_length)
 

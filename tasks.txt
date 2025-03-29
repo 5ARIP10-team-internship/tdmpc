@@ -1,1 +1,2 @@
-pendulum-swingup
+Pendulum-v1
+PMSM-v0
