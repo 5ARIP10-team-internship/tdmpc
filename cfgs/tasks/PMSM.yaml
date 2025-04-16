@@ -1,0 +1,5 @@
+action_repeat: 1
+episode_length: 200/${action_repeat}
+train_steps: 200000/${action_repeat}
+eval_freq: 2000
+eval_episodes: 10
