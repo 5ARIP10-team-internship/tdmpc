@@ -1,6 +1,7 @@
 # Log files
 logs/
 slurm_*.txt
+plots/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
