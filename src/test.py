@@ -51,6 +51,9 @@ def test(cfg):
     model_dir = Path().cwd() / __LOGS__ / cfg.task / 'models'
     agent.load(model_dir / 'model.pt')
 
+    # Create plots directory if it does not exist
+    plots_dir = Path().cwd() / 'plots'
+    plots_dir.mkdir(exist_ok=True)
     plot = PlotTest()
 
     num_episodes = 10
