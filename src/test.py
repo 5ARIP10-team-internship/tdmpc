@@ -8,8 +8,8 @@ import numpy as np
 __CONFIG__, __LOGS__ = 'cfgs', 'logs'
 
 class Test():
-    def __init__(self, cfg, agent):
-        self.env = make_env(cfg, render_mode=None)
+    def __init__(self, cfg, agent, env):
+        self.env = env
         self.agent = agent
         self.num_episodes = 10
         self.step = cfg.train_steps
@@ -30,8 +30,8 @@ class Test():
         print(f"Average Episode Reward: {np.nanmean(episode_rewards):.2f}")
 
 class TestPMSM(Test):
-    def __init__(self, cfg, agent):
-        super().__init__(cfg, agent)
+    def __init__(self, cfg, agent, env):
+        super().__init__(cfg, agent, env)
 
     # Create plots directory if it does not exist
     plots_dir = Path().cwd() / 'plots'
@@ -99,6 +99,7 @@ class TestPMSM(Test):
 
 if __name__ == '__main__':
     cfg = parse_cfg(Path().cwd() / __CONFIG__)
+    env = make_env(cfg, render_mode=None)
     agent = TDMPC(cfg)
 
     # Load the model
@@ -106,7 +107,7 @@ if __name__ == '__main__':
     agent.load(model_dir / 'model.pt')
 
     if cfg.task == 'PMSM-v0':
-        test = TestPMSM(cfg, agent)
+        test = TestPMSM(cfg, agent, env)
     else:
-        test = Test(cfg, agent)
+        test = Test(cfg, agent, env)
     test.run()
