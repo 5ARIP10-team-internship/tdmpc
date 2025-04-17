@@ -57,7 +57,7 @@ def train(cfg):
 	for step in range(0, cfg.train_steps+cfg.episode_length, cfg.episode_length):
 
 		# Collect trajectory
-		obs, _ = env.reset(seed=cfg.seed + step)
+		obs, _ = env.reset()
 		episode = Episode(cfg, obs)
 		while not episode.done:
 			action = agent.plan(obs, step=step, t0=episode.first)
@@ -91,7 +91,7 @@ def train(cfg):
 			common_metrics['episode_reward'] = evaluate(env, agent, cfg.eval_episodes, step, env_step, L.video)
 			L.log(common_metrics, category='eval')
 
-	L.finish(agent)
+	L.finish(agent, cfg)
 	print('Training completed successfully')
 
 

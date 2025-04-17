@@ -4,8 +4,16 @@ from cfg import parse_cfg
 from env import make_env
 import matplotlib.pyplot as plt
 import numpy as np
+import random
+import torch
 
 __CONFIG__, __LOGS__ = 'cfgs', 'logs'
+
+def set_seed(seed):
+	random.seed(seed)
+	np.random.seed(seed)
+	torch.manual_seed(seed)
+	torch.cuda.manual_seed_all(seed)
 
 class Test():
     def __init__(self, cfg):
@@ -104,6 +112,7 @@ class TestPMSM(Test):
 
 if __name__ == '__main__':
     cfg = parse_cfg(Path().cwd() / __CONFIG__)
+    set_seed(cfg.seed)
     if cfg.task == 'PMSM-v0':
         test = TestPMSM(cfg)
     else:

@@ -7,6 +7,7 @@ import torch
 import pandas as pd
 from termcolor import colored
 from omegaconf import OmegaConf
+from .test import TestPMSM
 
 
 CONSOLE_FORMAT = [('episode', 'E', 'int'), ('env_step', 'S', 'int'), ('episode_reward', 'R', 'float'), ('total_time', 'T', 'time')]
@@ -114,7 +115,9 @@ class Logger(object):
 	def video(self):
 		return self._video
 
-	def finish(self, agent):
+	def finish(self, agent, cfg):
+		test = TestPMSM(cfg)
+		test.run()
 		if self._save_model:
 			fp = self._model_dir / f'model.pt'
 			agent.save(fp)
