@@ -10,7 +10,8 @@ from omegaconf import OmegaConf
 from test import TestPMSM
 
 
-CONSOLE_FORMAT = [('episode', 'E', 'int'), ('env_step', 'S', 'int'), ('episode_reward', 'R', 'float'), ('total_time', 'T', 'time')]
+CONSOLE_FORMAT = [('episode', 'E', 'int'), ('env_step', 'S', 'int'), ('episode_reward', 'R', 'float'), 
+				  ('total_time', 'T', 'time'), ('id_ref', 'Id', 'float'), ('iq_ref', 'Iq', 'float')]
 AGENT_METRICS = ['consistency_loss', 'reward_loss', 'value_loss', 'total_loss', 'weighted_loss', 'pi_loss', 'grad_norm']
 
 
@@ -133,7 +134,7 @@ class Logger(object):
 		if ty == 'int':
 			return f'{colored(key+":", "grey")} {int(value):,}'
 		elif ty == 'float':
-			return f'{colored(key+":", "grey")} {value:.01f}'
+			return f'{colored(key+":", "grey")} {value:.03f}'
 		elif ty == 'time':
 			value = str(datetime.timedelta(seconds=int(value)))
 			return f'{colored(key+":", "grey")} {value}'
