@@ -69,11 +69,32 @@ class TDMPC():
 
 	def save(self, fp):
 		"""Save state dict of TOLD model to filepath."""
-		torch.save(self.state_dict(), fp)
+		state = self.state_dict()
+
+		print("\n[Saving Model]")
+		for net_name, net_dict in state.items():
+			print(f"\nState dict: '{net_name}'")
+			for key, value in net_dict.items():
+				if isinstance(value, torch.Tensor):
+					print(f"  {key}: shape={tuple(value.shape)}, mean={value.float().mean():.4f}, std={value.float().std():.4f}")
+				else:
+					print(f"  {key}: type={type(value)}")
+
+		torch.save(state, fp)
 	
 	def load(self, fp):
 		"""Load a saved state dict from filepath into current agent."""
 		d = torch.load(fp)
+
+		print("\n[Loading Model]")
+		for net_name, net_dict in d.items():
+			print(f"\nState dict: '{net_name}'")
+			for key, value in net_dict.items():
+				if isinstance(value, torch.Tensor):
+					print(f"  {key}: shape={tuple(value.shape)}, mean={value.float().mean():.4f}, std={value.float().std():.4f}")
+				else:
+					print(f"  {key}: type={type(value)}")
+
 		self.model.load_state_dict(d['model'])
 		self.model_target.load_state_dict(d['model_target'])
 
