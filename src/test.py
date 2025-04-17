@@ -4,27 +4,14 @@ from cfg import parse_cfg
 from env import make_env
 import matplotlib.pyplot as plt
 import numpy as np
-import random
-import torch
 
 __CONFIG__, __LOGS__ = 'cfgs', 'logs'
 
-def set_seed(seed):
-	random.seed(seed)
-	np.random.seed(seed)
-	torch.manual_seed(seed)
-	torch.cuda.manual_seed_all(seed)
-
 class Test():
-    def __init__(self, cfg):
+    def __init__(self, cfg, agent):
         self.env = make_env(cfg, render_mode=None)
-        self.agent = TDMPC(cfg)
+        self.agent = agent
         self.num_episodes = 10
-
-        # Load the model
-        model_dir = Path().cwd() / __LOGS__ / cfg.task / 'models'
-        self.agent.load(model_dir / 'model.pt')
-
         self.step = cfg.train_steps
 
     def run(self):
@@ -43,8 +30,8 @@ class Test():
         print(f"Average Episode Reward: {np.nanmean(episode_rewards):.2f}")
 
 class TestPMSM(Test):
-    def __init__(self, cfg):
-        super().__init__(cfg)
+    def __init__(self, cfg, agent):
+        super().__init__(cfg, agent)
 
     # Create plots directory if it does not exist
     plots_dir = Path().cwd() / 'plots'
@@ -112,9 +99,14 @@ class TestPMSM(Test):
 
 if __name__ == '__main__':
     cfg = parse_cfg(Path().cwd() / __CONFIG__)
-    set_seed(cfg.seed)
+    agent = TDMPC(cfg)
+
+    # Load the model
+    model_dir = Path().cwd() / __LOGS__ / cfg.task / 'models'
+    agent.load(model_dir / 'model.pt')
+
     if cfg.task == 'PMSM-v0':
-        test = TestPMSM(cfg)
+        test = TestPMSM(cfg, agent)
     else:
-        test = Test(cfg)
+        test = Test(cfg, agent)
     test.run()
