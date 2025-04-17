@@ -117,7 +117,7 @@ class Logger(object):
 		return self._video
 
 	def finish(self, agent, cfg):
-		test = TestPMSM(cfg)
+		test = TestPMSM(cfg, agent)
 		test.run()
 		if self._save_model:
 			fp = self._model_dir / f'model.pt'
