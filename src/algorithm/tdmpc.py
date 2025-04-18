@@ -64,39 +64,20 @@ class TDMPC():
 
 	def state_dict(self):
 		"""Retrieve state dict of TOLD model, including slow-moving target network."""
-		return {'model': self.model.state_dict(),
-				'model_target': self.model_target.state_dict()}
+		return {'model': self.model,
+				'model_target': self.model_target}
 
 	def save(self, fp):
 		"""Save state dict of TOLD model to filepath."""
-		state = self.state_dict()
-
-		print("\n[Saving Model]")
-		for net_name, net_dict in state.items():
-			print(f"\nState dict: '{net_name}'")
-			for key, value in net_dict.items():
-				if isinstance(value, torch.Tensor):
-					print(f"  {key}: shape={tuple(value.shape)}, mean={value.float().mean():.4f}, std={value.float().std():.4f}")
-				else:
-					print(f"  {key}: type={type(value)}")
-
-		torch.save(state, fp)
+		torch.save(self.state_dict(), fp)
 	
 	def load(self, fp):
 		"""Load a saved state dict from filepath into current agent."""
 		d = torch.load(fp)
-
-		print("\n[Loading Model]")
-		for net_name, net_dict in d.items():
-			print(f"\nState dict: '{net_name}'")
-			for key, value in net_dict.items():
-				if isinstance(value, torch.Tensor):
-					print(f"  {key}: shape={tuple(value.shape)}, mean={value.float().mean():.4f}, std={value.float().std():.4f}")
-				else:
-					print(f"  {key}: type={type(value)}")
-
-		self.model.load_state_dict(d['model'])
-		self.model_target.load_state_dict(d['model_target'])
+		self.model = d['model']
+		self.model_target = d['model_target']
+		self.model.eval()
+		self.model_target.eval()
 
 	@torch.no_grad()
 	def estimate_value(self, z, actions, horizon):

@@ -93,7 +93,7 @@ def train(cfg):
 			common_metrics['episode_reward'] = evaluate(env, agent, cfg.eval_episodes, step, env_step, L.video)
 			L.log(common_metrics, category='eval')
 
-	L.finish(agent, cfg, env)
+	L.finish(agent)
 	print('Training completed successfully')
 
 

@@ -116,11 +116,9 @@ class Logger(object):
 	def video(self):
 		return self._video
 
-	def finish(self, agent, cfg, env):
-		test = TestPMSM(cfg, agent, env)
-		test.run()
+	def finish(self, agent):
 		if self._save_model:
-			fp = self._model_dir / f'model.pt'
+			fp = self._model_dir / f'model.pth'
 			agent.save(fp)
 			if self._wandb:
 				artifact = self._wandb.Artifact(self._group+'-'+str(self._seed), type='model')
