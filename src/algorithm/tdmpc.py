@@ -64,18 +64,20 @@ class TDMPC():
 
 	def state_dict(self):
 		"""Retrieve state dict of TOLD model, including slow-moving target network."""
-		return {'model': self.model,
-				'model_target': self.model_target}
+		return {'model': self.model.state_dict(),
+				'model_target': self.model_target.state_dict(),
+				'std': self.std}
 
 	def save(self, fp):
 		"""Save state dict of TOLD model to filepath."""
 		torch.save(self.state_dict(), fp)
-	
+
 	def load(self, fp):
 		"""Load a saved state dict from filepath into current agent."""
-		d = torch.load(fp)
-		self.model = d['model']
-		self.model_target = d['model_target']
+		d = torch.load(fp, weights_only=False)
+		self.model.load_state_dict(d['model'])
+		self.model_target.load_state_dict(d['model_target'])
+		self.std = d.get('std', self.std)
 		self.model.eval()
 		self.model_target.eval()
 

@@ -104,7 +104,7 @@ if __name__ == '__main__':
 
     # Load the model
     model_dir = Path().cwd() / __LOGS__ / cfg.task / 'models'
-    agent.load(model_dir / 'model.pt')
+    agent.load(model_dir / 'model.pth')
 
     if cfg.task == 'PMSM-v0':
         test = TestPMSM(cfg, agent, env)

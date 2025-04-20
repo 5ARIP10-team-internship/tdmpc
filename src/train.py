@@ -82,9 +82,7 @@ def train(cfg):
 			'step': step,
 			'env_step': env_step,
 			'total_time': time.time() - start_time,
-			'episode_reward': episode.cumulative_reward,
-			'id_ref': obs[2],
-			'iq_ref': obs[3]}
+			'episode_reward': episode.cumulative_reward}
 		train_metrics.update(common_metrics)
 		L.log(train_metrics, category='train')
 

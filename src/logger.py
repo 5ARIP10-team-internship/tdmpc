@@ -7,11 +7,9 @@ import torch
 import pandas as pd
 from termcolor import colored
 from omegaconf import OmegaConf
-from test import TestPMSM
 
 
-CONSOLE_FORMAT = [('episode', 'E', 'int'), ('env_step', 'S', 'int'), ('episode_reward', 'R', 'float'), 
-				  ('total_time', 'T', 'time'), ('id_ref', 'Id', 'float'), ('iq_ref', 'Iq', 'float')]
+CONSOLE_FORMAT = [('episode', 'E', 'int'), ('env_step', 'S', 'int'), ('episode_reward', 'R', 'float'), ('total_time', 'T', 'time')]
 AGENT_METRICS = ['consistency_loss', 'reward_loss', 'value_loss', 'total_loss', 'weighted_loss', 'pi_loss', 'grad_norm']
 
 
