@@ -158,8 +158,14 @@ class EnvPMSM(gym.Env):
         # Initialization
         # [we]
         we_norm = np.round(self.np_random.uniform(low=0, high=high), 5)
+
+        # Overwrite predefined speed from options
+        if options:
+            we_norm = np.float32(options.get("we_norm")) if options.get("we_norm") else we_norm
+
         # Define denormalized speed value
         we = we_norm * self.we_nom
+
         # we_norm = 0.1
         # [id,iq]
         id_norm = np.round(self.np_random.uniform(low=low, high=high),5)
@@ -207,6 +213,25 @@ class EnvPMSM(gym.Env):
         # self.ss_analysis.continuous(a, b, w.squeeze(), plot_current=True)        # Continuous
         # self.ss_analysis.discrete(ad, self.bd, self.wd, plot_current=True)     # Discrete
 
+        # Overwrite predefined current values from options
+        if options:
+            id_norm      = np.float32(options.get("id_norm"))      if options.get("id_norm")      is not None else id_norm
+            iq_norm      = np.float32(options.get("iq_norm"))      if options.get("iq_norm")      is not None else iq_norm
+            id_ref_norm  = np.float32(options.get("id_ref_norm"))  if options.get("id_ref_norm")  is not None else id_ref_norm
+            iq_ref_norm  = np.float32(options.get("iq_ref_norm"))  if options.get("iq_ref_norm")  is not None else iq_ref_norm
+            prev_vd_norm = np.float32(options.get("prev_vd_norm")) if options.get("prev_vd_norm") is not None else None
+            prev_vq_norm = np.float32(options.get("prev_vq_norm")) if options.get("prev_vq_norm") is not None else None
+
+            self.prev_vd = prev_vd_norm * self.vdq_max if prev_vd_norm is not None and prev_vq_norm is not None else None
+            self.prev_vq = prev_vq_norm * self.vdq_max if prev_vd_norm is not None and prev_vq_norm is not None else None
+            
+            # Observation: [id, iq, id_ref, iq_ref, we, prev_vd, prev_vq]
+            obs = np.array([id_norm, iq_norm,  id_ref_norm, iq_ref_norm, we_norm, prev_vd_norm, prev_vq_norm], dtype=np.float32)
+
+        else:
+            self.prev_vd = None
+            self.prev_vq = None
+
         # Store idq, and idq_ref
         self.id     = self.i_max * id_norm
         self.iq     = self.i_max * iq_norm
@@ -215,9 +240,10 @@ class EnvPMSM(gym.Env):
         self.we     = self.we_nom * we_norm
 
         # Additional steps to store previous actions
-        n = 2
-        self.prev_vd = 0
-        self.prev_vq = 0
-        for _ in range(n):
-            obs, _, _, _, _ = self.step(action=self.action_space.sample())
+        if self.prev_vd is None or self.prev_vq is None:
+            n = 2
+            self.prev_vd = 0
+            self.prev_vq = 0
+            for _ in range(n):
+                obs, _, _, _, _ = self.step(action=self.action_space.sample())
         return obs, {}
