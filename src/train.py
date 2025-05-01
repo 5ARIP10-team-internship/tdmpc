@@ -49,8 +49,8 @@ def train(cfg):
 	assert torch.cuda.is_available()
 	set_seed(cfg.seed)
 	work_dir = Path().cwd() / __LOGS__ / cfg.task # / cfg.modality / cfg.exp_name / str(cfg.seed)
-	env, agent, buffer = make_env(cfg), TDMPC(cfg), ReplayBuffer(cfg)
-	
+	env, agent, buffer = make_env(cfg, seed=cfg.seed), TDMPC(cfg), ReplayBuffer(cfg)
+
 	# Run training
 	L = logger.Logger(work_dir, cfg)
 	episode_idx, start_time = 0, time.time()

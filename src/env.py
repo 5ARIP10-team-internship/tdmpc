@@ -21,7 +21,7 @@ class ActionRepeatWrapper(gym.Wrapper):
 
 		return obs, total_reward, terminated, truncated, info
 
-def make_env(cfg, render_mode=None):
+def make_env(cfg, seed=None, render_mode=None):
     domain = cfg.task
 
     # Get the environment class from gym
@@ -44,8 +44,8 @@ def make_env(cfg, render_mode=None):
     env = gym.make(domain, render_mode=render_mode, **filtered_kwargs)
     env = ActionRepeatWrapper(env, cfg.action_repeat)
     env = gym.wrappers.TimeLimit(env, cfg.episode_length)
-    env.reset(seed=cfg.seed)
-	
+    env.reset(seed=seed)
+
     # Convenience
     cfg.obs_shape = tuple(int(x) for x in env.observation_space.shape)
     cfg.action_shape = tuple(int(x) for x in env.action_space.shape)
