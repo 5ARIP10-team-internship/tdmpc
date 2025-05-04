@@ -9,7 +9,7 @@ def parse_cfg(cfg_path: str) -> OmegaConf:
     base = OmegaConf.load(cfg_path / "default.yaml")
     cli = OmegaConf.from_cli()
     for k, v in cli.items():
-        if v == None:
+        if v is None:
             cli[k] = True
     base.merge_with(cli)
 
@@ -24,7 +24,7 @@ def parse_cfg(cfg_path: str) -> OmegaConf:
     # Task config
     try:
         domain, task = base.task.split("-", 1)
-    except:
+    except ValueError:
         raise ValueError(f"Invalid task name: {base.task}")
     domain_path = cfg_path / "tasks" / f"{domain}.yaml"
     if not os.path.exists(domain_path):
