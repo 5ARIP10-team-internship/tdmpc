@@ -25,22 +25,19 @@ def set_seed(seed):
 	torch.cuda.manual_seed_all(seed)
 
 
-def evaluate(env, agent, num_episodes, step, env_step, video):
-	"""Evaluate a trained agent and optionally save a video."""
+def evaluate(env, agent, num_episodes, step, env_step):
+	"""Evaluate a trained agent."""
 	episode_rewards = []
 	for i in range(num_episodes):
 		obs, _ = env.reset()
 		done, ep_reward, t = False, 0, 0
-		if video: video.init(env, enabled=(i==0))
 		while not done:
 			action = agent.plan(obs, eval_mode=True, step=step, t0=t==0)
 			obs, reward, terminated, truncated, _ = env.step(action.cpu().numpy())
 			done = terminated or truncated
 			ep_reward += reward
-			if video: video.record(env)
 			t += 1
 		episode_rewards.append(ep_reward)
-		if video: video.save(env_step)
 	return np.nanmean(episode_rewards)
 
 
@@ -88,7 +85,7 @@ def train(cfg):
 
 		# Evaluate agent periodically
 		if env_step % cfg.eval_freq == 0:
-			common_metrics['episode_reward'] = evaluate(env, agent, cfg.eval_episodes, step, env_step, L.video)
+			common_metrics['episode_reward'] = evaluate(env, agent, cfg.eval_episodes, step, env_step)
 			L.log(common_metrics, category='eval')
 
 	L.finish(agent)

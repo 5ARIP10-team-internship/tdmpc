@@ -49,33 +49,6 @@ def cfg_to_group(cfg, return_list=False):
 	lst = [cfg.task, cfg.modality, re.sub('[^0-9a-zA-Z]+', '-', cfg.exp_name)]
 	return lst if return_list else '-'.join(lst)
 
-
-class VideoRecorder:
-	"""Utility class for logging evaluation videos."""
-	def __init__(self, root_dir, wandb, render_size=384, fps=15):
-		self.save_dir = (root_dir / 'eval_video') if root_dir else None
-		self._wandb = wandb
-		self.render_size = render_size
-		self.fps = fps
-		self.frames = []
-		self.enabled = False
-
-	def init(self, env, enabled=True):
-		self.frames = []
-		self.enabled = self.save_dir and self._wandb and enabled
-		self.record(env)
-
-	def record(self, env):
-		if self.enabled:
-			frame = env.render(mode='rgb_array', height=self.render_size, width=self.render_size, camera_id=0)
-			self.frames.append(frame)
-
-	def save(self, step):
-		if self.enabled:
-			frames = np.stack(self.frames).transpose(0, 3, 1, 2)
-			self._wandb.log({'eval_video': self._wandb.Video(frames, fps=self.fps, format='mp4')}, step=step)
-
-
 class Logger(object):
 	"""Primary logger object. Logs either locally or using wandb."""
 	def __init__(self, log_dir, cfg):
@@ -108,11 +81,6 @@ class Logger(object):
 			except:
 				print(colored('Warning: failed to init wandb. Logs will be saved locally.', 'yellow'), attrs=['bold'])
 				self._wandb = None
-		self._video = VideoRecorder(log_dir, self._wandb) if self._wandb and cfg.save_video else None
-
-	@property
-	def video(self):
-		return self._video
 
 	def finish(self, agent):
 		if self._save_model:
