@@ -1,25 +1,26 @@
-import gymnasium as gym
-import envs
-import numpy as np
 import inspect
 
+import gymnasium as gym
+
+
 class ActionRepeatWrapper(gym.Wrapper):
-	def __init__(self, env, num_repeats):
-		super().__init__(env)
-		self._num_repeats = num_repeats
+    def __init__(self, env, num_repeats):
+        super().__init__(env)
+        self._num_repeats = num_repeats
 
-	def step(self, action):
-		total_reward = 0.0
-		done = False
+    def step(self, action):
+        total_reward = 0.0
+        done = False
 
-		for _ in range(self._num_repeats):
-			obs, reward, terminated, truncated, info = self.env.step(action)
-			done = terminated or truncated
-			total_reward += reward
-			if done:
-				break
+        for _ in range(self._num_repeats):
+            obs, reward, terminated, truncated, info = self.env.step(action)
+            done = terminated or truncated
+            total_reward += reward
+            if done:
+                break
 
-		return obs, total_reward, terminated, truncated, info
+        return obs, total_reward, terminated, truncated, info
+
 
 def make_env(cfg, seed=None, render_mode=None):
     domain = cfg.task

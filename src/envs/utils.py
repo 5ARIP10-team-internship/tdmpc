@@ -1,5 +1,6 @@
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+
 
 ## ------------ Clarke Park Tranformation ------------ ##
 class ClarkePark:
@@ -53,14 +54,17 @@ class SSAnalysis:
     def __init__(self):
         return
 
-    def continuous(self,a, b, w=None, plot_current=False):
+    def continuous(self, a, b, w=None, plot_current=False):
         if w is not None:
             # dx/dt = a*x + b*u + w
             # Steady-state
             # 0 = a * x_ss + b * u_ss + w
             # x_ss = - a^-1 * (b * u_ss + w)
-            x_ss = lambda vdq: -np.linalg.inv(a) @ (b @ vdq + np.kron(np.ones((vdq.shape[1], 1)), w).T) if vdq.shape == (
-            2, 1000) else -np.linalg.inv(a) @ (b @ vdq + w)
+            x_ss = (
+                lambda vdq: -np.linalg.inv(a) @ (b @ vdq + np.kron(np.ones((vdq.shape[1], 1)), w).T)
+                if vdq.shape == (2, 1000)
+                else -np.linalg.inv(a) @ (b @ vdq + w)
+            )
 
             x_ss1 = x_ss(np.array([0, self.vdq_max]))
             x_ss2 = x_ss(np.array([self.vdq_max, 0]))
@@ -99,8 +103,7 @@ class SSAnalysis:
                 id_circle = self.i_max * np.concatenate((id, id), 0)
                 iq_circle = self.i_max * np.concatenate((iq, -iq), 0)
                 plt.plot(id_circle, iq_circle, label="Maximum current circle")
-                plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05),
-                           fancybox=True, shadow=True, ncol=2)
+                plt.legend(loc="upper center", bbox_to_anchor=(0.5, -0.05), fancybox=True, shadow=True, ncol=2)
                 plt.title("Continuous state-space model")
                 plt.show()
         else:
@@ -147,8 +150,7 @@ class SSAnalysis:
                 id_circle = self.i_max * np.concatenate((id, id), 0)
                 iq_circle = self.i_max * np.concatenate((iq, -iq), 0)
                 plt.plot(id_circle, iq_circle, label="Maximum current circle")
-                plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05),
-                           fancybox=True, shadow=True, ncol=2)
+                plt.legend(loc="upper center", bbox_to_anchor=(0.5, -0.05), fancybox=True, shadow=True, ncol=2)
                 plt.title("Continuous state-space model")
                 plt.show()
 
@@ -158,9 +160,11 @@ class SSAnalysis:
             # Steady-state
             # x_ss = ad * x_ss + bd * u_ss + wd
             # x_ss = (I - ad)^-1 * (bd * u_ss + wd)
-            x_ss = lambda vdq: -np.linalg.inv(np.eye(2) - ad) @ (
-                        bd @ vdq + np.kron(np.ones((vdq.shape[1], 1)), wd).T) if vdq.shape == (
-                2, 1000) else -np.linalg.inv(ad) @ (bd @ vdq + wd)
+            x_ss = (
+                lambda vdq: -np.linalg.inv(np.eye(2) - ad) @ (bd @ vdq + np.kron(np.ones((vdq.shape[1], 1)), wd).T)
+                if vdq.shape == (2, 1000)
+                else -np.linalg.inv(ad) @ (bd @ vdq + wd)
+            )
 
             x_ss1 = x_ss(np.array([0, self.vdq_max]))
             x_ss2 = x_ss(np.array([self.vdq_max, 0]))
@@ -199,8 +203,7 @@ class SSAnalysis:
                 id_circle = self.i_max * np.concatenate((id, id), 0)
                 iq_circle = self.i_max * np.concatenate((iq, -iq), 0)
                 plt.plot(id_circle, iq_circle, label="Maximum current circle")
-                plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05),
-                           fancybox=True, shadow=True, ncol=2)
+                plt.legend(loc="upper center", bbox_to_anchor=(0.5, -0.05), fancybox=True, shadow=True, ncol=2)
                 plt.title("Discrete state-space model")
                 plt.show()
         else:
@@ -247,7 +250,6 @@ class SSAnalysis:
                 id_circle = self.i_max * np.concatenate((id, id), 0)
                 iq_circle = self.i_max * np.concatenate((iq, -iq), 0)
                 plt.plot(id_circle, iq_circle, label="Maximum current circle")
-                plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05),
-                           fancybox=True, shadow=True, ncol=2)
+                plt.legend(loc="upper center", bbox_to_anchor=(0.5, -0.05), fancybox=True, shadow=True, ncol=2)
                 plt.title("Discrete state-space model")
                 plt.show()
