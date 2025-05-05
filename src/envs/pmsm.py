@@ -149,7 +149,7 @@ class EnvPMSM(gym.Env):
         delta_vq = np.abs(action[1] - prev_vq_norm)
 
         if self.reward_function == "absolute":
-            reward = -(e_id + e_iq + 0.1 * (delta_vd + delta_vq))
+            reward = -(e_id + e_iq + 0.2 * (delta_vd + delta_vq))
         elif self.reward_function == "quadratic":
             reward = -((np.power(e_id, 2) + np.power(e_iq, 2)) + 0.1 * (np.power(delta_vd, 2) + np.power(delta_vq, 2)))
         elif self.reward_function == "quadratic_2":
