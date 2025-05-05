@@ -2,6 +2,8 @@ import inspect
 
 import gymnasium as gym
 
+import envs  # noqa: F401
+
 
 class ActionRepeatWrapper(gym.Wrapper):
     def __init__(self, env, num_repeats):
