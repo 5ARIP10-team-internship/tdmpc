@@ -1,6 +1,6 @@
 action_repeat: 1
 episode_length: 200/${action_repeat}
-train_steps: 200000/${action_repeat}
+train_steps: 50000/${action_repeat}
 eval_freq: 5000
 eval_episodes: 10
 
@@ -9,10 +9,10 @@ iterations: 8 # Refine actions more
 min_std: 0.0
 
 # learning
-max_buffer_size: 400000
+max_buffer_size: 200000
 seed_steps: 10000
-std_schedule: linear(0.5, ${min_std}, 100000)
-horizon_schedule: linear(1, ${horizon}, 100000)
+std_schedule: linear(0.5, ${min_std}, 45000)
+horizon_schedule: linear(1, ${horizon}, 25000)
 
 # architecture
 enc_dim: 128
