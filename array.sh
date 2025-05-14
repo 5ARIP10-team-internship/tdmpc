@@ -7,8 +7,8 @@
 #SBATCH --cpus-per-task=9
 #SBATCH --array=1-2%2
 #SBATCH --time=04:00:00
-#SBATCH --output=slurm_output_%A_%a.txt
-#SBATCH --error=slurm_error_%A_%a.txt
+#SBATCH --output=logs/slurm_output_%A_%a.txt
+#SBATCH --error=logs/slurm_error_%A_%a.txt
 
 # Load necessary modules (adjust based on your environment)
 module purge
@@ -24,7 +24,7 @@ HPARAMS_FILE=$HOME/tdmpc/array_hyperparameters.txt
 TASK_NAME=$(echo $1 | cut -d'-' -f1)
 CFG_FILE=$HOME/tdmpc/cfgs/tasks/${TASK_NAME}.yaml
 
-LOGDIR=logs/array_${SLURM_ARRAY_JOB_ID}
+LOGDIR=checkpoints/array_${SLURM_ARRAY_JOB_ID}
 LOGPATH=$HOME/tdmpc/${LOGDIR}
 
 mkdir -p $LOGPATH

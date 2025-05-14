@@ -6,8 +6,8 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=9
 #SBATCH --time=02:00:00
-#SBATCH --output=slurm_output_%A.txt
-#SBATCH --error=slurm_error_%A.txt
+#SBATCH --output=logs/slurm_output_%A.txt
+#SBATCH --error=logs/slurm_error_%A.txt
 
 # Load necessary modules (adjust based on your environment)
 module purge
@@ -22,7 +22,7 @@ JOB_FILE=$HOME/tdmpc/train_hpc.sh
 TASK_NAME=$(echo $1 | cut -d'-' -f1)
 CFG_FILE=$HOME/tdmpc/cfgs/tasks/${TASK_NAME}.yaml
 
-LOGDIR=logs/train_${SLURM_JOB_ID}
+LOGDIR=checkpoints/train_${SLURM_JOB_ID}
 LOGPATH=$HOME/tdmpc/${LOGDIR}
 
 mkdir -p $LOGPATH
