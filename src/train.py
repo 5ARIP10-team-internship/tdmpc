@@ -19,7 +19,7 @@ from cfg import parse_cfg
 from env import make_env
 
 torch.backends.cudnn.benchmark = True
-__CONFIG__, __LOGS__ = "cfgs", "logs"
+__CONFIG__ = "cfgs"
 
 
 def set_seed(seed):
@@ -49,7 +49,7 @@ def train(cfg):
     """Training script for TD-MPC. Requires a CUDA-enabled device."""
     assert torch.cuda.is_available()
     set_seed(cfg.seed)
-    work_dir = Path().cwd() / __LOGS__ / cfg.task  # / cfg.modality / cfg.exp_name / str(cfg.seed)
+    work_dir = Path().cwd() / cfg.checkpoint_dir
     env, agent, buffer = make_env(cfg, seed=cfg.seed), TDMPC(cfg), ReplayBuffer(cfg)
 
     # Run training
