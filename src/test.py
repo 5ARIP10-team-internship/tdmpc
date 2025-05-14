@@ -7,7 +7,7 @@ from algorithm.tdmpc import TDMPC
 from cfg import parse_cfg
 from env import make_env
 
-__CONFIG__, __LOGS__ = "cfgs", "logs"
+__CONFIG__ = "cfgs"
 
 
 class Test:
@@ -147,7 +147,7 @@ if __name__ == "__main__":
     agent = TDMPC(cfg)
 
     # Load the model
-    model_dir = Path().cwd() / __LOGS__ / cfg.task / "models"
+    model_dir = Path().cwd() / cfg.checkpoint_dir / "models"
     agent.load(model_dir / "model.pth")
 
     if cfg.task == "PMSM-v0":

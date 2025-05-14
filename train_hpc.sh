@@ -25,7 +25,7 @@ HPARAMS_FILE=$HOME/tdmpc/cfgs/tasks/${TASK_NAME}.yaml
 LOGDIR=logs/train_${SLURM_JOB_ID}
 LOGPATH=$HOME/tdmpc/${LOGDIR}
 
-mkdir $LOGPATH
+mkdir -p $LOGPATH
 rsync $HPARAMS_FILE $LOGPATH/
 rsync $JOB_FILE $LOGPATH/
 
