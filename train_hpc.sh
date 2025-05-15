@@ -30,4 +30,4 @@ rsync $CFG_FILE $LOGPATH/
 rsync $JOB_FILE $LOGPATH/
 
 # Run the code
-srun python src/train.py task=$1 checkpoint_dir=$LOGDIR/${TASK_NAME}
+srun python src/train.py task=$1 id=$SLURM_JOB_ID checkpoint_dir=$LOGDIR/${TASK_NAME}

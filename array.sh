@@ -33,5 +33,5 @@ rsync $JOB_FILE $LOGPATH/
 rsync $HPARAMS_FILE $LOGPATH/
 
 # Run the code
-srun python src/train.py task=$1 checkpoint_dir=$LOGDIR/experiment_${SLURM_ARRAY_TASK_ID} \
+srun python src/train.py task=$1 id=${SLURM_JOB_ID}_${SLURM_ARRAY_TASK_ID} checkpoint_dir=$LOGDIR/experiment_${SLURM_ARRAY_TASK_ID} \
             $(head -$SLURM_ARRAY_TASK_ID $HPARAMS_FILE | tail -1)
