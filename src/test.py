@@ -197,7 +197,7 @@ class TestTCPMSM(Test):
         # Plot State
         ax = plt.subplot(131)
         ax.set_title("State vs step")
-        ax.plot(observations, label=["T", "Tref", "Id", "Iq"])
+        ax.plot(observations, label=[r"$\tau$", r"$\tau$ref", "Id", "Iq"])
         box = ax.get_position()
         ax.set_position([box.x0, box.y0 + box.height * 0.1, box.width, box.height * 0.9])
         ax.legend(

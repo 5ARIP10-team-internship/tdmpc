@@ -94,3 +94,10 @@ and add the following lines
 #SBATCH --mail-type=BEGIN,END
 #SBATCH --mail-user=your-email@student.tue.nl
 ```
+
+### Testing using HPC
+To be create test plots from the trained model you can do
+```
+sbatch test_hpc.sh PMSM-v0 12345678
+```
+where you can define your custom environment and the batch job number of the equivalent trained model
