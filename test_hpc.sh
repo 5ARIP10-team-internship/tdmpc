@@ -5,7 +5,7 @@
 #SBATCH --job-name=TestTDMPC
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=9
-#SBATCH --time=00:15:00
+#SBATCH --time=00:05:00
 #SBATCH --output=logs/slurm_output_%A.txt
 #SBATCH --error=logs/slurm_error_%A.txt
 
