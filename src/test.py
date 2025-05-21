@@ -2,6 +2,7 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
 from algorithm.tdmpc import TDMPC
 from cfg import parse_cfg
@@ -85,42 +86,64 @@ class TestPMSM(Test):
 
     def plot_three_phase(self, idx, observations, actions, reward, env_name, reward_type, speed=None):
         plt.figure(idx, figsize=(10, 6))
-        if speed is not None:
-            plt.suptitle(f"Reward: {reward_type}\nSpeed = {speed} [rad/s]")
-        # Plot State
-        ax = plt.subplot(131)
-        ax.set_title("State vs step")
-        ax.plot(observations, label=["Id", "Iq", "Idref", "Iqref"])
-        box = ax.get_position()
-        ax.set_position([box.x0, box.y0 + box.height * 0.1, box.width, box.height * 0.9])
-        ax.legend(
-            loc="lower center",
-            bbox_to_anchor=(0.5, -0.25),
-            ncol=2,
-            fancybox=True,
-            shadow=True,
-        )
-        # Plot action
-        ax = plt.subplot(132)
-        ax.set_title("Action vs step")
-        ax.plot(actions, label=["Vd", "Vq"])
-        box = ax.get_position()
-        ax.set_position([box.x0, box.y0 + box.height * 0.1, box.width, box.height * 0.9])
-        ax.legend(
-            loc="lower center",
-            bbox_to_anchor=(0.5, -0.25),
-            ncol=2,
-            fancybox=True,
-            shadow=True,
-        )
-        # Plot reward
-        ax = plt.subplot(133)
-        ax.set_title("Reward vs step")
-        ax.plot(reward)
-        box = ax.get_position()
-        ax.set_position([box.x0, box.y0 + box.height * 0.1, box.width, box.height * 0.9])
+        PLT_STATE_DIR = "plots/states/"
+        PLT_ACTION_DIR = "plots/actions/"
 
-        plt.savefig(f"plots/{env_name}_{idx}.png", bbox_inches="tight")
+        if not os.path.exists(PLT_STATE_DIR):
+            os.makedirs(PLT_STATE_DIR)
+
+        if not os.path.exists(PLT_ACTION_DIR):
+            os.makedirs(PLT_ACTION_DIR)        
+        
+        plt.clf()
+
+        ## Plot State
+
+        # Titles
+        plt.figure()
+        ax1 = plt.subplot(111)
+        plt.suptitle("State vs step")
+        if speed is not None:
+            ax1.set_title(f"Reward: {reward_type}, Speed = {speed:.4f} [rad/s]")
+
+        # Plotting
+        plt.plot(observations, label=['Id', 'Iq', 'Idref', 'Iqref'])
+        box = ax1.get_position()
+        ax1.set_position([box.x0, box.y0 + box.height * 0.1, box.width, box.height * 0.9])
+        ax1.legend(loc='lower center', 
+                   bbox_to_anchor=(0.5, -0.25),
+                   ncol=2, 
+                   fancybox=True, 
+                   shadow=True)
+        
+        # Saving
+        plt.savefig(f"plots/states/{env_name}_{idx}_state_RL.pdf", bbox_inches='tight')
+        plt.pause(0.001)  
+        plt.close()
+
+        ## Plot action
+
+        # Titles
+        plt.figure()
+        ax2 = plt.subplot(111)
+        plt.suptitle("Action vs step")
+        if speed is not None:
+            ax2.set_title(f"Reward: {reward_type}, Speed = {speed:.4f} [rad/s]")
+
+        # Plotting
+        plt.plot(actions, label=['Vd', 'Vq'])
+        box = ax2.get_position()
+        ax2.set_position([box.x0, box.y0 + box.height * 0.1,
+                         box.width, box.height * 0.9])
+        ax2.legend(loc='lower center', 
+                   bbox_to_anchor=(0.5, -0.25),
+                   ncol=2, 
+                   fancybox=True, 
+                   shadow=True)
+        
+        # Saving
+        plt.savefig(f"plots/actions/{env_name}_{idx}_action_RL.pdf", bbox_inches='tight')
+        plt.pause(0.001)  
         plt.close()
 
     def plot_error(self, errors):
@@ -192,42 +215,63 @@ class TestTCPMSM(Test):
 
     def plot_three_phase(self, idx, observations, actions, reward, env_name, reward_type, speed=None):
         plt.figure(idx, figsize=(10, 6))
-        if speed is not None:
-            plt.suptitle(f"Reward: {reward_type}\nSpeed = {speed} [rad/s]")
-        # Plot State
-        ax = plt.subplot(131)
-        ax.set_title("State vs step")
-        ax.plot(observations, label=[r"$\tau$", r"$\tau$ ref", "Id", "Iq"])
-        box = ax.get_position()
-        ax.set_position([box.x0, box.y0 + box.height * 0.1, box.width, box.height * 0.9])
-        ax.legend(
-            loc="lower center",
-            bbox_to_anchor=(0.5, -0.25),
-            ncol=2,
-            fancybox=True,
-            shadow=True,
-        )
-        # Plot action
-        ax = plt.subplot(132)
-        ax.set_title("Action vs step")
-        ax.plot(actions, label=["Vd", "Vq"])
-        box = ax.get_position()
-        ax.set_position([box.x0, box.y0 + box.height * 0.1, box.width, box.height * 0.9])
-        ax.legend(
-            loc="lower center",
-            bbox_to_anchor=(0.5, -0.25),
-            ncol=2,
-            fancybox=True,
-            shadow=True,
-        )
-        # Plot reward
-        ax = plt.subplot(133)
-        ax.set_title("Reward vs step")
-        ax.plot(reward)
-        box = ax.get_position()
-        ax.set_position([box.x0, box.y0 + box.height * 0.1, box.width, box.height * 0.9])
+        PLT_STATE_DIR = "plots/states/"
+        PLT_ACTION_DIR = "plots/actions/"
 
-        plt.savefig(f"plots/{env_name}_{idx}.png", bbox_inches="tight")
+        if not os.path.exists(PLT_STATE_DIR):
+            os.makedirs(PLT_STATE_DIR)
+
+        if not os.path.exists(PLT_ACTION_DIR):
+            os.makedirs(PLT_ACTION_DIR) 
+        plt.clf()
+
+        ## Plot State
+
+        # Title
+        ax1 = plt.subplot(111)
+        if speed is not None:
+            ax1.set_title(f"Reward: {reward_type}, Speed = {speed:.4f} [rad/s]")
+        plt.suptitle("State vs step")
+
+        # Plotting
+        ax1.plot(observations, label=[r"$\tau$", r"$\tau$ ref", 'Id', 'Iq'])
+        box = ax1.get_position()
+        ax1.set_position([box.x0, box.y0 + box.height * 0.1,
+                         box.width, box.height * 0.9])
+        ax1.legend(loc='lower center', 
+                   bbox_to_anchor=(0.5, -0.25),
+                   ncol=2, 
+                   fancybox=True, 
+                   shadow=True)
+        
+        # Saving
+        plt.savefig(f"plots/states/{env_name}_{idx}_RL.pdf", bbox_inches='tight')
+        plt.pause(0.001)  # pause a bit so that plots are updated 
+        plt.close()
+
+        ## Plot action
+
+        # Titles
+        ax2 = plt.subplot(111)
+        if speed is not None:
+            ax2.set_title(f"Reward: {reward_type}, Speed = {speed:.4f} [rad/s]")
+        plt.suptitle("State vs step")
+        
+        
+        # Plotting
+        ax2.plot(actions, label=['Vd', 'Vq'])
+        box = ax2.get_position()
+        ax2.set_position([box.x0, box.y0 + box.height * 0.1,
+                         box.width, box.height * 0.9])
+        ax2.legend(loc='lower center', 
+                   bbox_to_anchor=(0.5, -0.25),
+                   ncol=2, 
+                   fancybox=True, 
+                   shadow=True)
+
+        # Saving
+        plt.savefig(f"plots/actions/{env_name}_{idx}_RL.pdf", bbox_inches='tight')
+        plt.pause(0.001)  
         plt.close()
 
     def plot_error(self, errors):
