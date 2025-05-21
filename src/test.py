@@ -31,7 +31,7 @@ class Test:
     def __init__(self, cfg, agent, env):
         self.env = env
         self.agent = agent
-        self.num_episodes = 2
+        self.num_episodes = 100
         self.step = cfg.train_steps
 
     def run(self):
