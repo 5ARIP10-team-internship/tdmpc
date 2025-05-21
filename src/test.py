@@ -115,8 +115,8 @@ class TestTCPMSM(Test):
                 record = {
                     "episode": episode,
                     "step": t,
-                    "Id": obs[0],
-                    "Iq": obs[1],
+                    "Te": obs[0],
+                    "Te_ref": obs[1],
                     "Id_ref": obs[2],
                     "Iq_ref": obs[3],
                     "action_d": action[0],
