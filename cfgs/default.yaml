@@ -50,5 +50,5 @@ exp_name: default
 eval_freq: 20000
 eval_episodes: 10
 save_model: true
-checkpoint_dir: logs
+checkpoint_dir: checkpoints
 id: 0
