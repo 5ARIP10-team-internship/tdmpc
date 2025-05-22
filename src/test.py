@@ -11,14 +11,14 @@ from env import make_env
 __CONFIG__ = "cfgs"
 
 
-def get_csv_filename_from_model_path(model_path):
+def get_csv_filename(model_path):
     path = Path(model_path)
 
     if "train_" in path.parent.name:
         identifier = path.parent.name
         filename = f"{identifier}"
-    elif "array_" in path.parent.parent.name:
-        identifier = path.parent.parent.name
+    elif "array_" in path.parent.name:
+        identifier = path.parent.name
         experiment = path.name
         filename = f"{identifier}_{experiment}"
     else:
@@ -86,7 +86,7 @@ class TestPMSM(Test):
                 t += 1
 
         df = pd.DataFrame(data_records)
-        model_name = get_csv_filename_from_model_path(cfg.checkpoint_dir)
+        model_name = get_csv_filename(cfg.checkpoint_dir)
         out_csv = os.path.join(self.out_dir, f"{model_name}.csv")
         df.to_csv(out_csv, index=False)
         print(f"Saved test data to {out_csv}")
@@ -128,7 +128,7 @@ class TestTCPMSM(Test):
                 t += 1
 
         df = pd.DataFrame(data_records)
-        model_name = get_csv_filename_from_model_path(cfg.checkpoint_dir)
+        model_name = get_csv_filename(cfg.checkpoint_dir)
         out_csv = os.path.join(self.out_dir, f"{model_name}.csv")
         df.to_csv(out_csv, index=False)
         print(f"Saved test data to {out_csv}")
