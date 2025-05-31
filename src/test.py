@@ -31,7 +31,7 @@ class Test:
     def __init__(self, cfg, agent, env):
         self.env = env
         self.agent = agent
-        self.num_episodes = 100
+        self.num_episodes = 1000
         self.step = cfg.train_steps
 
     def run(self):
@@ -117,8 +117,8 @@ class TestTCPMSM(Test):
                     "step": t,
                     "Te": obs[0],
                     "Te_ref": obs[1],
-                    "Id_ref": obs[2],
-                    "Iq_ref": obs[3],
+                    "Id": obs[2],
+                    "Iq": obs[3],
                     "action_d": action[0],
                     "action_q": action[1],
                     "reward": reward,
